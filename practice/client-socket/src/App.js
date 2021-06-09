@@ -10,14 +10,15 @@ function App() {
         uri="http://localhost:8080"
         options={
             {
-              transports: ["websocket"]
+              transports: ["websocket"],
+              token: "klklkl"
             }
         }
       >
         <header className="App-header">
-          <p>
+          {/* <p>
             React Socket Chat
-          </p>
+          </p> */}
           <Chat>
 
           </Chat>
