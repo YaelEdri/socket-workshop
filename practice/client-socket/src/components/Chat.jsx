@@ -25,7 +25,16 @@ const Chat = () => {
     
     return (
         <div className="chat-container">
-            
+            <div className="messages">
+
+            </div>
+
+            <div className="input">
+                <input type="text" placeholder="הכנס הודעה" />
+                <div className="send">
+
+                </div>
+            </div>
         </div>
     )
 }
