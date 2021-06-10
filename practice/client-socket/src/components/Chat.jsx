@@ -6,7 +6,15 @@ import SendIcon from '@material-ui/icons/Send';
 import { IconButton } from '@material-ui/core'
 import "../styles/chat.scss";
 
+// events to do:
+//     emit: "send-m"
+//     on: "connect", "disconnect", "received-m", "received-c", "received-d"
+//     off: to all the on events
+
+// data to receive: name, ip, message
+
 const Chat = () => {
+    // delete!
     const [messages, setMessages] = useState([
         { type: 'connection', ip: '192.168.0.74', action: 'connect' },
         { type: 'message', ip: '192.168.0.47', content: 'kcdsmzckld', sender: 'שחר', date: '19:00' },
@@ -15,10 +23,16 @@ const Chat = () => {
         { type: 'connection', ip: '192.168.0.74', action: 'disconnect' },
     ]);
     const [ipAddress, setIpAddress] = useState('')
+    const [name, setName] = useState("");
+    const [input, setInput] = useState("");
     const socket = useSocket();
 
     useEffect(() => {
-        socket.on("connect", (message) => {
+        // const userName = prompt("rour name");
+        // setName(userName);
+
+        // they need to do:
+        socket.on("connect", () => {
             console.log("connected");
             socket.emit('get_IP')
         });
@@ -44,6 +58,15 @@ const Chat = () => {
         console.log('ipAddress: ', ipAddress);
     }, [ipAddress])
 
+    function onChange(e) {
+        const { value } = e.target;
+        setInput(value);
+    }
+
+    function sendMessage() {
+        // send socket
+    }
+    
     return (
         <div className="chat-container">
             <div className="messages">
@@ -61,10 +84,10 @@ const Chat = () => {
             </div>
 
             <div className="input">
-                <input type="text" placeholder="הקלד/י הודעה..." />
+                <input type="text" placeholder="הכנס הודעה" onChange={onChange} value={input || ""} />
                 <div className="send">
                     <IconButton>
-                        <SendIcon className='send-icon' />
+                        <SendIcon className='send-icon' onClick={sendMessage} />
                     </IconButton>
                 </div>
             </div>

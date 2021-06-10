@@ -9,7 +9,9 @@ export class SocketGateway
   wss: Server;
 
   findIPAddress(client: Socket) {
-    return client.handshake.address
+    const ip = client.handshake.address.split(':');
+    const address = ip[ip.length -1];
+    return address
   }
 
   afterInit(server: Server) {
@@ -19,20 +21,20 @@ export class SocketGateway
   //function that happenes on connection
   handleConnection(client: Socket) {
     const address = this.findIPAddress(client);
-    this.wss.emit("client-connect" , {address})
+    this.wss.emit("received-c" , {ip: address})
     console.log('connected with user: ', client.id, new Date(), "IP----", address);
   }
 
   handleDisconnect(client: Socket) {
     const address = this.findIPAddress(client);
-    this.wss.emit("client-disconnect" , {address})
+    this.wss.emit("received-d" , {address})
     console.log('disconnected with user: ', client.id);
-    // this.wss.to(`${client.id}`).emit('disconnecting-to-socket')
   }
 
 
-  @SubscribeMessage('message')
-  handleMessage(client: Socket, data): string {
-    return 'Hello world!';
+  @SubscribeMessage('get_IP')
+  handleMessage(client: Socket, data) {
+    client.emit("get_IP", {ip: this.findIPAddress(client)});
+    return;
   }
 }
