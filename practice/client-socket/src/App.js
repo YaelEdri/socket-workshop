@@ -7,24 +7,16 @@ function App() {
   return (
     <div className="App">
       <SocketProvider
-        uri="http://localhost:8080"
-        options={
-            {
-              transports: ["websocket"],
-              token: "klklkl"
-            }
-        }
+        uri="http://192.168.0.185:8080"
+        options={{
+          transports: ["websocket"],
+          token: "klklkl"
+        }}
       >
-        <header className="App-header">
-          {/* <p>
-            React Socket Chat
-          </p> */}
-          <Chat>
+        <Chat>
 
-          </Chat>
-        </header>
-
-    </SocketProvider>
+        </Chat>
+      </SocketProvider>
     </div>
   );
 }

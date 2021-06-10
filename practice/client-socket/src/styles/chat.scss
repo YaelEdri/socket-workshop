@@ -1,11 +1,11 @@
-.chat-container{
-    background-color: #d6d6d6;
-    border: 6px double black;
+.chat-container {
+    background-color: #dfdfdf;
+    border: 3px solid black;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 20px;
     overflow: hidden;
-    height: 100vh;
-    width: 50vw;
+    height: 95vh;
+    width: 500px;
 
     display: flex;
     flex-direction: column;
@@ -14,7 +14,7 @@
 
     .messages {
         width: 100%;
-        height: 95%;
+        height: 92%;
         overflow-x: hidden;
         overflow-y: auto;
 
@@ -26,28 +26,40 @@
     }
 
     .input {
-        background-color: white;
+        background-color: transparent;
         direction: rtl;
         width: 100%;
-        height: 5%;
+        height: 8%;
         border-radius: 2px;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-evenly;
+        align-items: center;
+        margin-bottom: 5px;
 
         input {
             font-size: 15px;
-            width: 90%;
-            height: 100%;
+            width: 80%;
+            height: 80%;
             border: hidden;
-            padding: 0px 5px;
+            padding: 0px 20px;
             outline: none;
+            border-radius: 30px;
         }
 
         .send {
-            width: 5%;
-            height: 100&;
-            background-color: #bbbbbb;
+            width: 8%;
+            height: 100%;
+            border-radius: 100%;
+            transform: rotate(180deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .send-icon {
+                height: 100%;
+                font-size: 6vh;
+                cursor: pointer;
+            }
         }
     }
-
 }
