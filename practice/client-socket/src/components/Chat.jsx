@@ -23,11 +23,9 @@ import "../styles/chat.scss";
 const Chat = () => {
     // delete!
     const [messages, setMessages] = useState([
-        { type: 'connection', ip: '192.168.0.74', action: 'connect' },
-        { type: 'message', ip: '192.168.0.47', content: 'kcdsmzckld', sender: 'שחר', date: '19:00' },
-        { type: 'message', ip: '192.168.0.74', content: 'kcdsmzckld mdlsmcvkldszmckdszmlk mcsl;zmvkzlsmcd', sender: 'כנה', date: '19:01' },
-        { type: 'message', ip: '192.168.0.185', content: 'jvfodjif', sender: 'יעל', date: '19:03' },
-        { type: 'connection', ip: '192.168.0.74', action: 'disconnect' },
+        { type: 'message', ip: '192.168.0.47', content: "שלום כולם", sender: 'שחר', date: '19:00' },
+        { type: 'message', ip: '192.168.0.74', content: "ברוכים הבאים לתרגול", sender: 'כנה', date: '19:01' },
+        { type: 'message', ip: '192.168.0.185', content: 'בהצלחה D:', sender: 'יעל', date: '19:03' },
     ]);
     const [ipAddress, setIpAddress] = useState('')
     const [input, setInput] = useState("");
