@@ -21,13 +21,13 @@ export class SocketGateway
   //function that happenes on connection
   handleConnection(client: Socket) {
     const address = this.findIPAddress(client);
-    this.wss.emit("received-connection" , {ip: address})
+    this.wss.emit("received_connection" , {ip: address})
     console.log('connected with user: ', client.id, new Date(), "IP----", address);
   }
 
   handleDisconnect(client: Socket) {
     const address = this.findIPAddress(client);
-    this.wss.emit("received-disconnection" , {address})
+    this.wss.emit("received_disconnection" , {address})
     console.log('disconnected with user: ', client.id);
   }
 
@@ -38,9 +38,11 @@ export class SocketGateway
     return;
   }
 
-  @SubscribeMessage('send-message')
+  @SubscribeMessage('send_message')
   handleSendMessage(client: Socket, {sender, content}) {
-    client.emit("received-message", {ip: this.findIPAddress(client), sender, content});
+    console.log("send------------", content, sender);
+    
+    client.emit("received_message", {ip: this.findIPAddress(client), sender, content});
     return;
   }
 }

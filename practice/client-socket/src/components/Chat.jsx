@@ -71,6 +71,31 @@ const Chat = () => {
         if (which !== 13) return
         sendMessage();
     }
+
+    function addConnectionMessage(action, date, ip) {
+        const message = {
+            type: "connection",
+            action,
+            ip,
+            date
+        }
+        setMessages(prev => {
+            return [...prev, message]
+        })
+    }
+
+    function addMessage(ip, date, content) {
+        const message = {
+            type: "message",
+            ip,
+            sender: name,
+            date,
+            content
+        }
+        setMessages(prev => {
+            return [...prev, message]
+        })
+    }
     
     return (
         <div className="chat-container">
