@@ -45,7 +45,7 @@ const Chat = () => {
         });
 
         socket.on("received_connect", (data) => {
-            addConnectionMessage("connect", data)
+            addConnectionMessage(data, "connect")
         })
 
         socket.on("received_disconnect", (data) => {
