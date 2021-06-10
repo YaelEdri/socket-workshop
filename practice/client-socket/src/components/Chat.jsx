@@ -66,6 +66,11 @@ const Chat = () => {
     function sendMessage() {
         // send socket
     }
+
+    function handleKeyDown({ which }) {
+        if (which !== 13) return
+        sendMessage();
+    }
     
     return (
         <div className="chat-container">
@@ -84,7 +89,7 @@ const Chat = () => {
             </div>
 
             <div className="input">
-                <input type="text" placeholder="הכנס הודעה" onChange={onChange} value={input || ""} />
+                <input type="text" placeholder="הכנס הודעה" onChange={onChange} value={input || ""} onKeyDown={handleKeyDown} />
                 <div className="send">
                     <IconButton>
                         <SendIcon className='send-icon' onClick={sendMessage} />
