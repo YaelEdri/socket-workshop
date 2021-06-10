@@ -23,9 +23,14 @@ const Chat = () => {
         { type: 'connection', ip: '192.168.0.74', action: 'disconnect' },
     ]);
     const [ipAddress, setIpAddress] = useState('')
-    const [name, setName] = useState("");
     const [input, setInput] = useState("");
     const socket = useSocket();
+
+    useEffect(() => {
+        if (!localStorage.getItem('name')) {
+            getUserName()
+        }
+    }, [])
 
     useEffect(() => {
         // they need to do:
@@ -69,6 +74,10 @@ const Chat = () => {
     }, []);
 
     useEffect(() => {
+        scrollToNewMessage(messages[messages.length - 1].id)
+    }, [messages])
+
+    useEffect(() => {
         console.log('ipAddress: ', ipAddress);
     }, [ipAddress])
 
@@ -77,7 +86,7 @@ const Chat = () => {
         while (!userName) {
             userName = prompt("enter your name:");
         }
-        setName(userName);
+        localStorage.setItem('name', userName)
     }
 
     function onChange(e) {
@@ -90,7 +99,7 @@ const Chat = () => {
         socket.emit("send_message",
             {
                 content: input,
-                sender: name,
+                sender: localStorage.getItem('name'),
                 date: currentTime()
             })
         setInput("")
@@ -130,6 +139,11 @@ const Chat = () => {
         setMessages(prev => {
             return [...prev, message]
         })
+    }
+
+    const scrollToNewMessage = (id) => {
+        const el = document.getElementById(String(id))
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" })
     }
 
     return (
