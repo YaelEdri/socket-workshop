@@ -23,14 +23,14 @@ export class SocketGateway
   //function that happenes on connection
   handleConnection(client: Socket) {
     const address = this.findIPAddress(client);
-    this.wss.emit("received_connection" , {ip: address, id: SocketGateway.count})
+    this.wss.emit("received_connect" , {ip: address, id: SocketGateway.count, action: "connect"})
     SocketGateway.count++
     console.log('connected with user: ', client.id, new Date(), "IP----", address);
   }
 
   handleDisconnect(client: Socket) {
     const address = this.findIPAddress(client);
-    this.wss.emit("received_disconnection" , {ip: address, id: SocketGateway.count})
+    this.wss.emit("received_disconnect" , {ip: address, id: SocketGateway.count, action: "disconnect"})
     SocketGateway.count++
     console.log('disconnected with user: ', client.id);
   }
@@ -45,7 +45,9 @@ export class SocketGateway
   @SubscribeMessage('send_message')
   handleSendMessage(client: Socket, {sender, content, date}) {
     console.log("send------------", content, sender);
-    client.emit("received_message", {ip: this.findIPAddress(client), sender, content, date, id: SocketGateway.count});
+    this.wss.emit("received_message", {ip: this.findIPAddress(client), sender, content, date, id: SocketGateway.count});
+    console.log('sent');
+    
     SocketGateway.count++
     return;
   }

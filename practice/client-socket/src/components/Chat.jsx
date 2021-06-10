@@ -19,7 +19,7 @@ const Chat = () => {
         { type: 'connection', ip: '192.168.0.74', action: 'connect' },
         { type: 'message', ip: '192.168.0.47', content: 'kcdsmzckld', sender: 'שחר', date: '19:00' },
         { type: 'message', ip: '192.168.0.74', content: 'kcdsmzckld mdlsmcvkldszmckdszmlk mcsl;zmvkzlsmcd', sender: 'כנה', date: '19:01' },
-        { type: 'message', ip: '', content: 'jvfodjif', sender: 'יעל', date: '19:03' },
+        { type: 'message', ip: '192.168.0.185', content: 'jvfodjif', sender: 'יעל', date: '19:03' },
         { type: 'connection', ip: '192.168.0.74', action: 'disconnect' },
     ]);
     const [ipAddress, setIpAddress] = useState('')
@@ -43,6 +43,11 @@ const Chat = () => {
             console.log('data: ', data);
             addConnectionMessage("connect", data)
 
+        })
+
+        socket.on("received_disconnect", (data) => {
+            console.log('data: ', data);
+            addConnectionMessage("disconnect", data)
         })
 
         socket.on("reconnect_error", () => {
@@ -92,8 +97,6 @@ const Chat = () => {
         // send socket
         socket.emit("send_message",
             {
-                type: 'message',
-                ip: ipAddress,
                 content: input,
                 sender: localStorage.getItem('name'),
                 date: currentTime()
@@ -111,13 +114,12 @@ const Chat = () => {
         sendMessage();
     }
 
-    function addConnectionMessage(action, date, ip, id) {
+    function addConnectionMessage({action, ip, id}) {
         const message = {
             id,
             type: "connection",
             action,
             ip,
-            date
         }
         setMessages(prev => {
             return [...prev, message]
