@@ -1,3 +1,19 @@
-<script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
 
+<script>
+    const socket = io('http://localhost:8080', { transports: ['websocket', 'polling', 'flashsocket'] });
+
+    socket.on('connect', (data) => {
+        console.log('connected to socket', socket.id);
+        socket.emit('join', socket.id)
+        socket.emit('message', { data: 'I am connected'/* , userId: socket.id */ })
+    })
+
+    socket.on('response', (data) => {
+        console.log('response: ', data);
+    })
+
+    socket.on('private', (privateData) => {
+        console.log('privateData: ', privateData);
+    })
 </script>
