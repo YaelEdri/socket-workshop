@@ -21,7 +21,13 @@
         &::-webkit-scrollbar {
             width: 5px;
             border-radius: 15px;
-            background-color: #bbbbbb;
+            // background-color: #bbbbbb;
+            // background-color: #dfdfdf;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            border-radius: 30px;
+            background: #bebfc0b7;
         }
     }
 

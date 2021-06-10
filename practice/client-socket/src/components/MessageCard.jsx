@@ -1,9 +1,9 @@
 import React from 'react'
 import '../styles/messageCard.scss'
 
-const MessageCard = ({ isMe, ip, content, sender, date }) => {
+const MessageCard = ({ id, isMe, ip, content, sender, date }) => {
     return (
-        <div className={'message-card-container' + (isMe ? ' me' : '')}>
+        <div id={id} className={'message-card-container' + (isMe ? ' me' : '')}>
             <div className={"message-card" + (isMe ? ' me' : '')}>
                 <div className="message-card--header"><strong>{`${ip}, ${sender}`}</strong></div>
                 <div className="message-card--body">
