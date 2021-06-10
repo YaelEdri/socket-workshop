@@ -40,7 +40,6 @@ const Chat = () => {
         });
 
         socket.on("received_connect", (data) => {
-            console.log('data: ', data);
             addConnectionMessage(data, "connect")
 
         })
