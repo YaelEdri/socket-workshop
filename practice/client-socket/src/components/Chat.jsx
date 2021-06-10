@@ -19,7 +19,7 @@ const Chat = () => {
         { type: 'connection', ip: '192.168.0.74', action: 'connect' },
         { type: 'message', ip: '192.168.0.47', content: 'kcdsmzckld', sender: 'שחר', date: '19:00' },
         { type: 'message', ip: '192.168.0.74', content: 'kcdsmzckld mdlsmcvkldszmckdszmlk mcsl;zmvkzlsmcd', sender: 'כנה', date: '19:01' },
-        { type: 'message', ip: '192.168.0.185', content: 'jvfodjif', sender: 'יעל', date: '19:03' },
+        { type: 'message', ip: '', content: 'jvfodjif', sender: 'יעל', date: '19:03' },
         { type: 'connection', ip: '192.168.0.74', action: 'disconnect' },
     ]);
     const [ipAddress, setIpAddress] = useState('')
@@ -45,7 +45,8 @@ const Chat = () => {
         });
 
         socket.on('get_IP', ({ ip }) => {
-            setIpAddress(ip)
+            if (!ip) socket.emit("get_IP")
+            else setIpAddress(ip)
         })
 
         socket.on("received_message", (data) => {

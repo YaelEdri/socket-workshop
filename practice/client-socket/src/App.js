@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <SocketProvider
-        uri="http://192.168.0.185:8080"
+        uri={process.env.REACT_APP_DOMAIN_NAME}
         options={{
           transports: ["websocket"],
           token: "klklkl"
