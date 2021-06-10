@@ -47,13 +47,11 @@ const Chat = () => {
         });
 
         socket.on("received_connect", (data) => {
-            console.log('data: ', data);
             addConnectionMessage("connect", data)
         })
 
         socket.on("received_disconnect", (data) => {
-            console.log('data: ', data);
-            addConnectionMessage("disconnect", data)
+            addConnectionMessage(data, "disconnect")
         })
 
         socket.on("reconnect_error", () => {
@@ -73,7 +71,9 @@ const Chat = () => {
             socket.off("connect");
             socket.off("reconnect_error");
             socket.off("get_IP");
-            socket.off("received_message")
+            socket.off("received_message");
+            socket.off("eceived_disconnect");
+            socket.off("received_connect");
         }
         // eslint-disable-next-line
     }, []);
