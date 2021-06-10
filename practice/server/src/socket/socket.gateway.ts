@@ -44,10 +44,7 @@ export class SocketGateway
 
   @SubscribeMessage('send_message')
   handleSendMessage(client: Socket, {sender, content, date}) {
-    console.log("send------------", content, sender);
-    this.wss.emit("received_message", {ip: this.findIPAddress(client), sender, content, date, id: SocketGateway.count});
-    console.log('sent');
-    
+    this.wss.emit("received_message", {ip: this.findIPAddress(client), sender, content, date, id: SocketGateway.count});    
     SocketGateway.count++
     return;
   }
