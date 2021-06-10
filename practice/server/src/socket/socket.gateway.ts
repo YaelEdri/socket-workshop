@@ -39,10 +39,10 @@ export class SocketGateway
   }
 
   @SubscribeMessage('send_message')
-  handleSendMessage(client: Socket, {sender, content}) {
+  handleSendMessage(client: Socket, {sender, content, date}) {
     console.log("send------------", content, sender);
     
-    client.emit("received_message", {ip: this.findIPAddress(client), sender, content});
+    client.emit("received_message", {ip: this.findIPAddress(client), sender, content, date});
     return;
   }
 }
