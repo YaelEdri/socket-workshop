@@ -6,6 +6,13 @@ import SendIcon from '@material-ui/icons/Send';
 import { IconButton } from '@material-ui/core'
 import "../styles/chat.scss";
 
+/**
+ * connctoin type:
+ *  { id, type: 'connection', ip, action: 'connect' | 'disconnect' }
+ * message type:
+ *  { id, type: 'message', ip, content, sender, date }
+*/
+
 // events to do:
 //     emit: "send-m"
 //     on: "connect", "disconnect", "received-m", "received-c", "received-d"
@@ -16,11 +23,9 @@ import "../styles/chat.scss";
 const Chat = () => {
     // delete!
     const [messages, setMessages] = useState([
-        { type: 'connection', ip: '192.168.0.74', action: 'connect' },
-        { type: 'message', ip: '192.168.0.47', content: 'kcdsmzckld', sender: 'שחר', date: '19:00' },
-        { type: 'message', ip: '192.168.0.74', content: 'kcdsmzckld mdlsmcvkldszmckdszmlk mcsl;zmvkzlsmcd', sender: 'כנה', date: '19:01' },
-        { type: 'message', ip: '192.168.0.185', content: 'jvfodjif', sender: 'יעל', date: '19:03' },
-        { type: 'connection', ip: '192.168.0.74', action: 'disconnect' },
+        { type: 'message', ip: '192.168.0.47', content: "שלום כולם", sender: 'שחר', date: '19:00' },
+        { type: 'message', ip: '192.168.0.74', content: "ברוכים הבאים לתרגול", sender: 'כנה', date: '19:01' },
+        { type: 'message', ip: '192.168.0.185', content: 'בהצלחה D:', sender: 'יעל', date: '19:03' },
     ]);
     const [ipAddress, setIpAddress] = useState('')
     const [input, setInput] = useState("");
@@ -40,9 +45,7 @@ const Chat = () => {
         });
 
         socket.on("received_connect", (data) => {
-            console.log('data: ', data);
             addConnectionMessage(data, "connect")
-
         })
 
         socket.on("received_disconnect", (data) => {
@@ -74,6 +77,7 @@ const Chat = () => {
     }, []);
 
     useEffect(() => {
+        if (!messages.length) return
         scrollToNewMessage(messages[messages.length - 1].id)
     }, [messages])
 
@@ -96,6 +100,7 @@ const Chat = () => {
 
     function sendMessage() {
         // send socket
+        if (!input) return
         socket.emit("send_message",
             {
                 content: input,
@@ -115,7 +120,7 @@ const Chat = () => {
         sendMessage();
     }
 
-    function addConnectionMessage({action, ip, id}) {
+    function addConnectionMessage({ action, ip, id }) {
         const message = {
             id,
             type: "connection",
