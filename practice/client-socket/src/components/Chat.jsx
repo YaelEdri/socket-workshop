@@ -6,6 +6,13 @@ import SendIcon from '@material-ui/icons/Send';
 import { IconButton } from '@material-ui/core'
 import "../styles/chat.scss";
 
+/**
+ * connctoin type:
+ *  { id, type: 'connection', ip, action: 'connect' | 'disconnect' }
+ * message type:
+ *  { id, type: 'message', ip, content, sender, date }
+*/
+
 // events to do:
 //     emit: "send-m"
 //     on: "connect", "disconnect", "received-m", "received-c", "received-d"
@@ -42,7 +49,6 @@ const Chat = () => {
         socket.on("received_connect", (data) => {
             console.log('data: ', data);
             addConnectionMessage("connect", data)
-
         })
 
         socket.on("received_disconnect", (data) => {
@@ -73,6 +79,7 @@ const Chat = () => {
     }, []);
 
     useEffect(() => {
+        if (!messages.length) return
         scrollToNewMessage(messages[messages.length - 1].id)
     }, [messages])
 
@@ -95,6 +102,7 @@ const Chat = () => {
 
     function sendMessage() {
         // send socket
+        if (!input) return
         socket.emit("send_message",
             {
                 content: input,
@@ -114,7 +122,7 @@ const Chat = () => {
         sendMessage();
     }
 
-    function addConnectionMessage({action, ip, id}) {
+    function addConnectionMessage({ action, ip, id }) {
         const message = {
             id,
             type: "connection",
