@@ -28,14 +28,17 @@ const Chat = () => {
     const socket = useSocket();
 
     useEffect(() => {
-        // const userName = prompt("rour name");
-        // setName(userName);
-
         // they need to do:
         socket.on("connect", () => {
             console.log("connected");
             socket.emit('get_IP')
         });
+
+        socket.on("received_connect", (data) => {
+            console.log('data: ', data);
+            addConnectionMessage("connect", data)
+
+        })
 
         socket.on("reconnect_error", () => {
             console.log("reconnect_error");
@@ -45,18 +48,30 @@ const Chat = () => {
             setIpAddress(ip)
         })
 
+        socket.on("received_message", (data) => {
+            addMessage(data)
+        })
+
         return () => {
             socket.off("connect");
             socket.off("reconnect_error");
             socket.off("get_IP");
+            socket.off("received_message")
         }
-
         // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         console.log('ipAddress: ', ipAddress);
     }, [ipAddress])
+
+    function getUserName() {
+        let userName;
+        while (!userName) {
+            userName = prompt("enter your name:");
+        }
+        setName(userName);
+    }
 
     function onChange(e) {
         const { value } = e.target;
@@ -65,6 +80,20 @@ const Chat = () => {
 
     function sendMessage() {
         // send socket
+        socket.emit("send_message",
+            {
+                type: 'message',
+                ip: ipAddress,
+                content: input,
+                sender: name,
+                date: currentTime()
+            })
+        setInput("")
+    }
+
+    function currentTime() {
+        const date = new Date()
+        return date.toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" })
     }
 
     function handleKeyDown({ which }) {
@@ -72,8 +101,9 @@ const Chat = () => {
         sendMessage();
     }
 
-    function addConnectionMessage(action, date, ip) {
+    function addConnectionMessage(action, date, ip, id) {
         const message = {
+            id,
             type: "connection",
             action,
             ip,
@@ -84,11 +114,12 @@ const Chat = () => {
         })
     }
 
-    function addMessage(ip, date, content) {
+    function addMessage({ ip, date, content, sender, id }) {
         const message = {
+            id,
             type: "message",
             ip,
-            sender: name,
+            sender,
             date,
             content
         }
@@ -96,7 +127,7 @@ const Chat = () => {
             return [...prev, message]
         })
     }
-    
+
     return (
         <div className="chat-container">
             <div className="messages">
@@ -116,8 +147,8 @@ const Chat = () => {
             <div className="input">
                 <input type="text" placeholder="הכנס הודעה" onChange={onChange} value={input || ""} onKeyDown={handleKeyDown} />
                 <div className="send">
-                    <IconButton>
-                        <SendIcon className='send-icon' onClick={sendMessage} />
+                    <IconButton onClick={sendMessage}>
+                        <SendIcon className='send-icon' />
                     </IconButton>
                 </div>
             </div>
