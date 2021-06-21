@@ -38,6 +38,7 @@ const Chat = () => {
     }, [])
 
     useEffect(() => {
+        socket.open()
         // they need to do:
         socket.on("connect", () => {
             console.log("connected");
@@ -66,6 +67,7 @@ const Chat = () => {
         })
 
         return () => {
+            socket.close()
             socket.off("connect");
             socket.off("reconnect_error");
             socket.off("get_IP");
@@ -80,10 +82,6 @@ const Chat = () => {
         if (!messages.length) return
         scrollToNewMessage(messages[messages.length - 1].id)
     }, [messages])
-
-    useEffect(() => {
-        console.log('ipAddress: ', ipAddress);
-    }, [ipAddress])
 
     function getUserName() {
         let userName;
@@ -101,12 +99,11 @@ const Chat = () => {
     function sendMessage() {
         // send socket
         if (!input) return
-        socket.emit("send_message",
-            {
-                content: input,
-                sender: localStorage.getItem('name'),
-                date: currentTime()
-            })
+        socket.emit("send_message", {
+            content: input,
+            sender: localStorage.getItem('name'),
+            date: currentTime()
+        })
         setInput("")
     }
 
@@ -121,26 +118,14 @@ const Chat = () => {
     }
 
     function addConnectionMessage({ action, ip, id }) {
-        const message = {
-            id,
-            type: "connection",
-            action,
-            ip,
-        }
+        const message = { id, type: "connection", action, ip }
         setMessages(prev => {
             return [...prev, message]
         })
     }
 
     function addMessage({ ip, date, content, sender, id }) {
-        const message = {
-            id,
-            type: "message",
-            ip,
-            sender,
-            date,
-            content
-        }
+        const message = { id, type: "message", ip, sender, date, content }
         setMessages(prev => {
             return [...prev, message]
         })
@@ -168,7 +153,7 @@ const Chat = () => {
             </div>
 
             <div className="input">
-                <input type="text" placeholder="הכנס הודעה" onChange={onChange} value={input || ""} onKeyDown={handleKeyDown} />
+                <input type="text" placeholder="הקלד/י הודעה" onChange={onChange} value={input || ""} onKeyDown={handleKeyDown} />
                 <div className="send">
                     <IconButton onClick={sendMessage}>
                         <SendIcon className='send-icon' />
