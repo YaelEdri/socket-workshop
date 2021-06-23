@@ -16,7 +16,7 @@ import "../styles/chat.scss";
 // events to do:
 //     emit: "send_message" 
 //          data for the emit - object that includes: content, sender and date
-//     on: "connect", "disconnect", "received_message", "received_connect", "received_disconnect", "reconnect_error"
+//     on: "connect", "received_message", "received_connect", "received_disconnect"
 //          data to receive: name, ip, message
 //     off: to all the on events
 
@@ -61,6 +61,10 @@ const Chat = () => {
             userName = prompt("enter your name:");
         }
         localStorage.setItem('name', userName)
+    }
+
+    function getSender(){
+        return localStorage.setItem('name', userName)
     }
 
     function onChange(e) {
