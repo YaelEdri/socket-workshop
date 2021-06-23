@@ -2,7 +2,7 @@ import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessa
 import { Server, Socket } from "socket.io"
 
 @WebSocketGateway()
-export class SocketGateway 
+export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   static count: number = 0
@@ -12,7 +12,7 @@ export class SocketGateway
 
   findIPAddress(client: Socket) {
     const ip = client.handshake.address.split(':');
-    const address = ip[ip.length -1];
+    const address = ip[ip.length - 1];
     return address
   }
 
@@ -23,14 +23,14 @@ export class SocketGateway
   //function that happenes on connection
   handleConnection(client: Socket) {
     const address = this.findIPAddress(client);
-    this.wss.emit("received_connect" , {ip: address, id: SocketGateway.count, action: "connect"})
+    this.wss.emit("received_connect", { ip: address, id: SocketGateway.count, action: "connect" })
     SocketGateway.count++
     console.log('connected with user: ', client.id, new Date(), "IP----", address);
   }
 
   handleDisconnect(client: Socket) {
     const address = this.findIPAddress(client);
-    this.wss.emit("received_disconnect" , {ip: address, id: SocketGateway.count, action: "disconnect"})
+    this.wss.emit("received_disconnect", { ip: address, id: SocketGateway.count, action: "disconnect" })
     SocketGateway.count++
     console.log('disconnected with user: ', client.id);
   }
@@ -38,13 +38,13 @@ export class SocketGateway
 
   @SubscribeMessage('get_IP')
   handlegetIP(client: Socket, data) {
-    client.emit("get_IP", {ip: this.findIPAddress(client)});
+    client.emit("get_IP", { ip: this.findIPAddress(client) });
     return;
   }
 
   @SubscribeMessage('send_message')
-  handleSendMessage(client: Socket, {sender, content, date}) {
-    this.wss.emit("received_message", {ip: this.findIPAddress(client), sender, content, date, id: SocketGateway.count});    
+  handleSendMessage(client: Socket, { sender, content, date }) {
+    this.wss.emit("received_message", { ip: this.findIPAddress(client), sender, content, date, id: SocketGateway.count });
     SocketGateway.count++
     return;
   }

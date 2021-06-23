@@ -14,19 +14,19 @@ import "../styles/chat.scss";
 */
 
 // events to do:
-//     emit: "send-m"
-//     on: "connect", "disconnect", "received-m", "received-c", "received-d"
+//     emit: "send_message" 
+//          data for the emit - object that includes: content, sender and date
+//     on: "connect", "disconnect", "received_message", "received_connect", "received_disconnect", "reconnect_error"
+//          data to receive: name, ip, message
 //     off: to all the on events
 
-// data to receive: name, ip, message
-
 const Chat = () => {
-    // delete!
     const [messages, setMessages] = useState([
         { type: 'message', ip: '192.168.0.47', content: "שלום כולם", sender: 'שחר', date: '19:00' },
         { type: 'message', ip: '192.168.0.74', content: "ברוכים הבאים לתרגול", sender: 'כנה', date: '19:01' },
         { type: 'message', ip: '192.168.0.185', content: 'בהצלחה D:', sender: 'יעל', date: '19:03' },
     ]);
+
     const [ipAddress, setIpAddress] = useState('')
     const [input, setInput] = useState("");
     const socket = useSocket();
@@ -38,41 +38,15 @@ const Chat = () => {
     }, [])
 
     useEffect(() => {
-        // they need to do:
-        socket.on("connect", () => {
-            console.log("connected");
-            socket.emit('get_IP')
-        });
-
-        socket.on("received_connect", (data) => {
-            addConnectionMessage(data, "connect")
-        })
-
-        socket.on("received_disconnect", (data) => {
-            addConnectionMessage(data, "disconnect")
-        })
-
-        socket.on("reconnect_error", () => {
-            console.log("reconnect_error");
-        });
+        // write your code here:
 
         socket.on('get_IP', ({ ip }) => {
             if (!ip) socket.emit("get_IP")
             else setIpAddress(ip)
         })
 
-        socket.on("received_message", (data) => {
-            addMessage(data)
-        })
+        // don't forget to clean up 😉
 
-        return () => {
-            socket.off("connect");
-            socket.off("reconnect_error");
-            socket.off("get_IP");
-            socket.off("received_message");
-            socket.off("eceived_disconnect");
-            socket.off("received_connect");
-        }
         // eslint-disable-next-line
     }, []);
 
@@ -80,10 +54,6 @@ const Chat = () => {
         if (!messages.length) return
         scrollToNewMessage(messages[messages.length - 1].id)
     }, [messages])
-
-    useEffect(() => {
-        console.log('ipAddress: ', ipAddress);
-    }, [ipAddress])
 
     function getUserName() {
         let userName;
@@ -99,14 +69,8 @@ const Chat = () => {
     }
 
     function sendMessage() {
+        if (!input.trim()) return
         // send socket
-        if (!input) return
-        socket.emit("send_message",
-            {
-                content: input,
-                sender: localStorage.getItem('name'),
-                date: currentTime()
-            })
         setInput("")
     }
 
