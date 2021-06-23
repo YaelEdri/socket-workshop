@@ -5,8 +5,7 @@
 
     socket.on('connect', (data) => {
         console.log('connected to socket', socket.id);
-        socket.emit('join', socket.id)
-        socket.emit('message', { data: 'I am connected'/* , userId: socket.id */ })
+        socket.emit('message', { data: 'I am connected' })
     })
 
     socket.on('response', (data) => {

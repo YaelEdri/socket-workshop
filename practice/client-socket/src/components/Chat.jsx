@@ -85,26 +85,14 @@ const Chat = () => {
     }
 
     function addConnectionMessage({ action, ip, id }) {
-        const message = {
-            id,
-            type: "connection",
-            action,
-            ip,
-        }
+        const message = { id, type: "connection", action, ip }
         setMessages(prev => {
             return [...prev, message]
         })
     }
 
     function addMessage({ ip, date, content, sender, id }) {
-        const message = {
-            id,
-            type: "message",
-            ip,
-            sender,
-            date,
-            content
-        }
+        const message = { id, type: "message", ip, sender, date, content }
         setMessages(prev => {
             return [...prev, message]
         })
@@ -132,7 +120,7 @@ const Chat = () => {
             </div>
 
             <div className="input">
-                <input type="text" placeholder="הכנס הודעה" onChange={onChange} value={input || ""} onKeyDown={handleKeyDown} />
+                <input type="text" placeholder="הקלד/י הודעה" onChange={onChange} value={input || ""} onKeyDown={handleKeyDown} />
                 <div className="send">
                     <IconButton onClick={sendMessage}>
                         <SendIcon className='send-icon' />

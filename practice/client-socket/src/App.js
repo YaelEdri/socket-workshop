@@ -13,9 +13,7 @@ function App() {
           token: "klklkl"
         }}
       >
-        <Chat>
-
-        </Chat>
+        <Chat />
       </SocketProvider>
     </div>
   );
